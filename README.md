@@ -5,6 +5,8 @@ and OAuth authentication.
 
 Requires `google-auth` `google-auth-oauthlib` `google-api-python-client` `fastapi[standard]`
 
+Needs a Google Calendar API key as env variable `GCAL_API_KEY`.
+
 ## Installation
 
 ```bash
