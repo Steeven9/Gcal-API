@@ -35,7 +35,7 @@ def get_calendar_events(calendar_id: str):
         events = events_result.get('items', [])
     except Exception as e:
         print(f"Error accessing calendar: {e}")
-        return {"error": f"Unable to access calendar: {str(e)}"}
+        return {"error": "Unable to access calendar"}
 
     if not events:
         print('No upcoming events found.')
@@ -43,7 +43,8 @@ def get_calendar_events(calendar_id: str):
 
     event_list = []
     for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        event_list.append({"startTime": start, "title": event['summary']})
+        if "compleanno" not in event['summary'].lower():
+            start = event['start'].get('dateTime', event['start'].get('date'))
+            event_list.append({"startTime": start, "title": event['summary']})
 
     return event_list
