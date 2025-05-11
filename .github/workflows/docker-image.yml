@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-push:
-    uses: steeven9/CICD-template/.github/workflows/docker-build.yml@main
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@main
     with:
       image-name: steeven9/gcal-api
       push: true
