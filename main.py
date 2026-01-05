@@ -18,12 +18,16 @@ def read_root():
 @app.get("/events/{calendar_id}")
 def read_item(calendar_id: str):
     events = get_calendar_events(calendar_id)
-    print(f"Found {len(events)} events")
+    print(f"Found {len(events)} events for calendar {calendar_id}")
     return events
 
 
 def get_calendar_events(calendar_id: str):
-    service = build('calendar', 'v3', developerKey=API_KEY)
+    try:
+        service = build('calendar', 'v3', developerKey=API_KEY)
+    except Exception as e:
+        print(f"Error creating Google calendar client: {e}")
+        return {"error": "Internal error"}
 
     try:
         events_result = service.events().list(
@@ -34,7 +38,7 @@ def get_calendar_events(calendar_id: str):
             orderBy='startTime').execute()
         events = events_result.get('items', [])
     except Exception as e:
-        print(f"Error accessing calendar: {e}")
+        print(f"Error accessing calendar {calendar_id}: {e}")
         return {"error": "Unable to access calendar"}
 
     if not events:
