@@ -6,14 +6,27 @@ on:
     branches:
       - "*"
     tags:
-      - "v*"
+      - "*"
 
 jobs:
-  build-and-push:
-    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@main
+  build-tags:
+    # Build and push the image with the tag name
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@2f687755dff9b7110e952f1d3eb2f31ccd0ec308 # 1.1.1
+    if: github.ref_type == 'tag'
     with:
-      image-name: steeven9/gcal-api
+      image-name: steeven9/gcal-api:${{ github.ref_name }}
       push: true
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  build-branches:
+    # Build all branches but push only in main
+    uses: soulsbros/CICD-template/.github/workflows/docker-build.yml@2f687755dff9b7110e952f1d3eb2f31ccd0ec308 # 1.1.1
+    if: github.ref_type == 'branch'
+    with:
+      image-name: steeven9/gcal-api:latest
+      push: ${{ github.ref_name == 'main' }}
       ping_webhook: ${{ github.ref_name == 'main' }}
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
