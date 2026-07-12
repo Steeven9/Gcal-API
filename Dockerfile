@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM dhi.io/python:3-alpine-sfw-dev
 
 WORKDIR /app
 
